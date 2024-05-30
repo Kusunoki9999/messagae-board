@@ -3,10 +3,10 @@ session_start();
 require_once(__DIR__ . '/../src/db_connect.php');
 if(isset($_POST['action_type']) && $_POST['action_type']){
   if($_POST['action_type'] === 'insert'){
-    require(__DIR__ . '/../src/insert_message.php')
+    require(__DIR__ . '/../src/insert_message.php');
   }
-
 }
+?>
 
 <!DOCTYPE html>
 <html>
