@@ -5,11 +5,26 @@ require_once(__DIR__ . '/../src/db_connect.php');
 if (isset($_POST['action_type']) && $_POST['action_type']) {
   if ($_POST['action_type'] === 'insert') {
     require(__DIR__ . '/../src/insert_message.php');
+  } else if ($_POST['action_type'] === 'delete') {
+    require(__DIR__ . '/../src/delete_message.php');
   }
+  
 }
 
 require(__DIR__ . '/../src/session_values.php');
+
+$stmt = $dbh->query('SELECT * FROM posts ORDER BY created_at DESC;');
+$message_length = $stmt->rowCount();
+
+function convertTz($datetime_text)
+{
+  $datetime = new DateTime($datetime_text);
+  $datetime->setTimezone(new DateTimeZone('Asia/Tokyo'));
+  return $datetime->format('Y/m/d H:i:s');
+}
 ?>
+
+
 <!DOCTYPE html>
 <html>
 
