@@ -24,7 +24,6 @@ require(__DIR__ . '/../src/session_values.php');
 
 <body>
   <div class="page-cover">
-
     <p class="page-title">ひとこと掲示板</p>
     <hr class="page-divider" />
     <div class="form-cover">
@@ -47,5 +46,10 @@ require(__DIR__ . '/../src/session_values.php');
         <button type="submit" class="input-submit-button">投稿する</button>
       </form>
     </div>
-
     <hr class="page-divider" />
+    <div class="message-list-cover">
+    </div>
+  </div>
+</body>
+
+</html>
