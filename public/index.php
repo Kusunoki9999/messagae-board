@@ -62,7 +62,31 @@ function convertTz($datetime_text)
       </form>
     </div>
     <hr class="page-divider" />
+
     <div class="message-list-cover">
+      <small>
+        <?php echo $message_length; ?> 件の投稿
+      </small>
+
+      <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
+        <?php $lines = explode("\n", $row['message']); ?>
+        <div class="message-item">
+          <div class="message-title">
+            <div><?php echo htmlspecialchars($row['author_name'], ENT_QUOTES); ?></div>
+            <small><?php echo convertTz($row['created_at']); ?></small>
+            <div class="spacer"></div>
+            <form action="/" method="post" style="text-align:right">
+              <input type="hidden" name="id" value="<?php echo $row['id']; ?>" />
+              <input type="hidden" name="action_type" value="delete" />
+              <button type="submit" class="message-delete-button">削除</button>
+            </form>
+          </div>
+          <?php foreach ($lines as $line) { ?>
+            <p class="message-line"><?php echo htmlspecialchars($line, ENT_QUOTES); ?></p>
+          <?php } ?>
+        </div>
+      <?php } ?>
+
     </div>
   </div>
 </body>
