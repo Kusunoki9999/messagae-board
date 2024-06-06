@@ -59,10 +59,15 @@ if ($is_valid_auther_name && $is_valid_message) {
   $stmt->bindValue(':message', $input_message, PDO::PARAM_STR);
 
   $stmt->execute();
+  $_SESSION['action_success_text'] = '投稿しました';
+  $_SESSION['action_error_text'] = '';
   $_SESSION['input_error_author_name'] = '';
   $_SESSION['input_error_message'] = '';
   $_SESSION['input_pre_author_name'] = '';
   $_SESSION['input_pre_message'] = '';
+} else {
+  $_SESSION['action_success_text'] = '';
+  $_SESSION['action_error_text'] = '入力内容を確認してください';
 }
 
 header('Location: /');
