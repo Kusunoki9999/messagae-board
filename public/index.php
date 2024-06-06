@@ -5,11 +5,26 @@ require_once(__DIR__ . '/../src/db_connect.php');
 if (isset($_POST['action_type']) && $_POST['action_type']) {
   if ($_POST['action_type'] === 'insert') {
     require(__DIR__ . '/../src/insert_message.php');
+  } else if ($_POST['action_type'] === 'delete') {
+    require(__DIR__ . '/../src/delete_message.php');
   }
+  
 }
 
 require(__DIR__ . '/../src/session_values.php');
+
+$stmt = $dbh->query('SELECT * FROM posts ORDER BY created_at DESC;');
+$message_length = $stmt->rowCount();
+
+function convertTz($datetime_text)
+{
+  $datetime = new DateTime($datetime_text);
+  $datetime->setTimezone(new DateTimeZone('Asia/Tokyo'));
+  return $datetime->format('Y/m/d H:i:s');
+}
 ?>
+
+
 <!DOCTYPE html>
 <html>
 
@@ -47,7 +62,31 @@ require(__DIR__ . '/../src/session_values.php');
       </form>
     </div>
     <hr class="page-divider" />
+
     <div class="message-list-cover">
+      <small>
+        <?php echo $message_length; ?> 件の投稿
+      </small>
+
+      <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
+        <?php $lines = explode("\n", $row['message']); ?>
+        <div class="message-item">
+          <div class="message-title">
+            <div><?php echo htmlspecialchars($row['author_name'], ENT_QUOTES); ?></div>
+            <small><?php echo convertTz($row['created_at']); ?></small>
+            <div class="spacer"></div>
+            <form action="/" method="post" style="text-align:right">
+              <input type="hidden" name="id" value="<?php echo $row['id']; ?>" />
+              <input type="hidden" name="action_type" value="delete" />
+              <button type="submit" class="message-delete-button">削除</button>
+            </form>
+          </div>
+          <?php foreach ($lines as $line) { ?>
+            <p class="message-line"><?php echo htmlspecialchars($line, ENT_QUOTES); ?></p>
+          <?php } ?>
+        </div>
+      <?php } ?>
+
     </div>
   </div>
 </body>
